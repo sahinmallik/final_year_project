@@ -1,0 +1,13 @@
+.brand-name {
+  background: linear-gradient(to right, #095087, #2ca062, #364241);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  text-decoration: none;
+}
+.nav-link {
+  transition: border-bottom 0.1s ease;
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid #000;
+}

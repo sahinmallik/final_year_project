@@ -1,0 +1,6 @@
+.main-heading {
+  background: linear-gradient(to right, #095087, #2ca062, #364241);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  text-decoration: none;
+}
