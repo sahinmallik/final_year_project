@@ -38,7 +38,7 @@ const UserNavbar = () => {
         alignItems="center"
         p={2}
         sx={{
-          background: "#fff",
+          background: "#000",
           position: "sticky",
           justifyContent: "space-between",
           top: 0,
@@ -55,12 +55,12 @@ const UserNavbar = () => {
           }}
         >
           <AdminPanelSettingsIcon
-            sx={{ fontSize: 40, color: "#000", mr: "5px" }}
+            sx={{ fontSize: 40, color: "#fff", mr: "5px" }}
           />
           <Typography
             variant="h4"
             sx={{
-              color: "#000",
+              color: "#fff",
             }}
           >
             Admin
@@ -70,7 +70,10 @@ const UserNavbar = () => {
           color="inherit"
           aria-label="Open Drawer"
           onClick={handleDrawerOpen}
-          sx={{ display: { xs: "block", sm: "block", md: "block" } }}
+          sx={{
+            display: { xs: "block", sm: "block", md: "block" },
+            color: "#fff",
+          }}
         >
           <MenuIcon />
         </IconButton>
@@ -109,7 +112,7 @@ const UserNavbar = () => {
           </ListItem>
         </List>
       </Drawer>
-      <NotInit />
+      {/* <NotInit /> */}
     </>
   );
 };
