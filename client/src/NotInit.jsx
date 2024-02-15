@@ -14,7 +14,7 @@ const NotInit = () => {
         alignItems: "center",
       }}
     >
-      <Box sx={{ background: "#DDFFFF", borderRadius: "40px" }} p={15}>
+      <Box sx={{ background: "#a2defa", borderRadius: "40px" }} p={15}>
         <Stack direction="column" justifyContent="center" alignItems="center">
           <Typography variant={isTabletOrMobile ? "h6" : "h5"}>
             The election has not been initialized.

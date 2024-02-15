@@ -41,7 +41,8 @@ const UserNavbar = () => {
         alignItems="center"
         p={2}
         sx={{
-          background: "#fff",
+          zIndex: 2,
+          background: "#000",
           position: "sticky",
           justifyContent: "space-between",
           top: 0,

@@ -1,91 +1,26 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Paper,
-  Grid,
-  Tooltip,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-// import {  } from "@mui/material/useMediaQuery";
-
-const ElectionStatus = (props) => {
+import { Box, useMediaQuery, useTheme, Typography } from "@mui/material";
+const ElectionStatus = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
-        padding: theme.spacing(isMobile ? 2 : 3),
-        borderTop: "1px solid",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: isMobile ? theme.spacing(2) : "2rem",
+        backgroundColor: "#f2f2f2",
+        borderRadius: "20px",
+        width: isMobile ? "95%" : isTablet ? "65%" : "53%",
+        margin: "2rem",
       }}
     >
-      <Typography variant={isMobile ? "h5" : "h6"} component="h3" gutterBottom>
-        Election Status
+      <Typography variant={isMobile ? "h6" : "h5"} component="h4">
+        Election has already Started
       </Typography>
-      <Grid container spacing={isMobile ? 1 : 2}>
-        <Grid item xs={isMobile ? 12 : 6}>
-          <Paper
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: theme.spacing(isMobile ? 1 : 2),
-              borderRadius: "1em",
-            }}
-          >
-            <Typography variant="body1">Started:</Typography>
-            <Tooltip
-              title={true ? "Election has started" : "Election has not started"}
-            >
-              <Typography variant="body1">{true ? "True" : "False"}</Typography>
-            </Tooltip>
-          </Paper>
-        </Grid>
-        {isMobile ? (
-          <Grid item xs={12}>
-            <Paper
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                padding: theme.spacing(isMobile ? 1 : 2),
-                borderRadius: "1em",
-              }}
-            >
-              <Typography variant="body1">Ended:</Typography>
-              <Tooltip
-                title={true ? "Election has ended" : "Election is ongoing"}
-              >
-                <Typography variant="body1">
-                  {true ? "True" : "False"}
-                </Typography>
-              </Tooltip>
-            </Paper>
-          </Grid>
-        ) : (
-          <Grid item xs={6}>
-            <Paper
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                padding: theme.spacing(isMobile ? 1 : 2),
-                borderRadius: "1em",
-              }}
-            >
-              <Typography variant="body1">Ended:</Typography>
-              <Tooltip
-                title={true ? "Election has ended" : "Election is ongoing"}
-              >
-                <Typography variant="body1">
-                  {true ? "True" : "False"}
-                </Typography>
-              </Tooltip>
-            </Paper>
-          </Grid>
-        )}
-      </Grid>
     </Box>
   );
 };

@@ -38,11 +38,12 @@ const UserNavbar = () => {
         alignItems="center"
         p={2}
         sx={{
+          zIndex: 2,
           background: "#000",
           position: "sticky",
           justifyContent: "space-between",
           top: 0,
-          height: "6vh",
+          height: "10vh",
         }}
       >
         <Button
@@ -92,7 +93,7 @@ const UserNavbar = () => {
             </ListItemIcon>
             <ListItemText primary="Registration" />
           </ListItem>
-          <ListItem button component={Link} to="/nomination">
+          <ListItem button component={Link} to="/add-candidate">
             <ListItemIcon>
               <PersonAddAltOutlinedIcon />
             </ListItemIcon>
