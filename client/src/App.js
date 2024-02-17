@@ -7,6 +7,7 @@ import AdminNavbar from "./components/UserNavbar/AdminNavbar";
 import UserNavbar from "./components/UserNavbar/UserNavbar";
 import Home from "./components/Home";
 import Registration from "./components/Registration/Registration";
+import Result from "./components/Result/Result";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/connect" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </Box>
   );
