@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 // import {  } from "@mui/material/useMediaQuery";
 
-function UserHome() {
+function UserHome(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -37,14 +37,14 @@ function UserHome() {
           component="h1"
           marginBottom={"2rem"}
         >
-          Election Name
+          {props.el.electionTitle}
         </Typography>
         <Typography
           variant={isMobile ? "h5" : "h4"}
           component="h3"
           marginBottom={"2rem"}
         >
-          Organization Name
+          {props.el.organizationTitle}
         </Typography>
       </Stack>
       <Stack direction="column" justifyContent="center" alignItems="center">
@@ -58,7 +58,7 @@ function UserHome() {
               </TableCell>
               <TableCell align="left">
                 <Typography variant={isMobile ? "h6" : "h5"} component="h4">
-                  Admin Name
+                  {props.el.adminName} ({props.el.adminTitle})
                 </Typography>
               </TableCell>
             </TableRow>
@@ -70,7 +70,7 @@ function UserHome() {
               </TableCell>
               <TableCell align="left">
                 <Typography variant={isMobile ? "h6" : "h5"} component="h4">
-                  Email
+                  {props.el.adminEmail}
                 </Typography>
               </TableCell>
             </TableRow>

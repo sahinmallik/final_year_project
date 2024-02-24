@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, useTheme, useMediaQuery, Button } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  useMediaQuery,
+  Button,
+  Typography,
+} from "@mui/material";
 import CameraIcon from "@mui/icons-material/Camera";
 import Webcam from "react-webcam";
 // import "./Camera.css";
@@ -80,25 +86,30 @@ const Camera = ({ voterData, setVoterData }) => {
           padding: theme.spacing(isMobile ? 2 : 3),
         }}
       >
-        <Webcam
-          ref={webcamRef}
-          audio={false}
-          screenshotFormat="image/jpeg"
-          videoConstraints={videoConstraints}
-          onUserMedia={onUserMedia}
-          mirrored={true}
-          width={"100%"}
-        />
-        <Button
-          variant="outlined"
-          startIcon={<CameraIcon />}
-          size="large"
-          sx={{
-            marginTop: "2rem",
-          }}
-        >
-          Capture
-        </Button>
+        {openCamera ? (
+          <>
+            <Webcam
+              ref={webcamRef}
+              audio={false}
+              screenshotFormat="image/jpeg"
+              videoConstraints={videoConstraints}
+              onUserMedia={onUserMedia}
+              mirrored={true}
+              width={"100%"}
+            />
+            <Button
+              variant="outlined"
+              startIcon={<CameraIcon />}
+              size="large"
+              sx={{
+                marginTop: "2rem",
+              }}
+              onClick={capturePhoto}
+            >
+              Capture
+            </Button>
+          </>
+        ) : null}
       </Box>
       <Box
         sx={{
@@ -109,20 +120,26 @@ const Camera = ({ voterData, setVoterData }) => {
           padding: theme.spacing(isMobile ? 2 : 3),
         }}
       >
-        <img
-          src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fbuffer.com%2Flibrary%2Ffree-images%2F&psig=AOvVaw2qTo6cptan6Qjr8gLxLK93&ust=1708089479812000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCIjxjKe3rYQDFQAAAAAdAAAAABAJ"
-          alt="hehe"
-        />
-        <Button
-          variant="outlined"
-          startIcon={<CameraIcon />}
-          size="large"
-          sx={{
-            marginTop: "2rem",
-          }}
-        >
-          Retake
-        </Button>
+        {url && !openCamera ? (
+          <>
+            <Typography variant="p" marginBottom="1rem">
+              your picture is clicked now you can closed the camera interface by
+              clicking anywhere in the screen and then click Register.
+            </Typography>
+            <img src={url} alt="Your Picture" />
+            <Button
+              variant="outlined"
+              startIcon={<CameraIcon />}
+              size="large"
+              sx={{
+                marginTop: "2rem",
+              }}
+              onClick={() => setOpenCamera(true)}
+            >
+              Retake
+            </Button>
+          </>
+        ) : null}
       </Box>
     </>
   );

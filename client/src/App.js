@@ -3,8 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import HomePage from "./components/HomePage/HomePage";
 // import UserNavbar from "./components/UserNavbar/UserNavbar";
-import AdminNavbar from "./components/UserNavbar/AdminNavbar";
-import UserNavbar from "./components/UserNavbar/UserNavbar";
+
 import Home from "./components/Home";
 import Registration from "./components/Registration/Registration";
 import Result from "./components/Result/Result";

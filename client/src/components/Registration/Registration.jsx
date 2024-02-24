@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -20,12 +20,14 @@ import {
   styled,
   Modal,
 } from "@mui/material";
-import AdminNavbar from "../UserNavbar/AdminNavbar";
+// import AdminNavbar from "../UserNavbar/AdminNavbar";
 import NotInit from "../../NotInit";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import Camera from "./Camera";
-
+import UserNavbar from "../UserNavbar/UserNavbar";
+// import AdminNavbar from "../UserNavbar/AdminNavbar";
+import AdminNavbar from "../AdminNavbar/AdminNavbar";
 export default function Registration() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -34,13 +36,27 @@ export default function Registration() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [voterName, setVoterName] = useState("");
+  const [voterPhone, setVoterPhone] = useState("");
+  const [voterEmail, setVoterEmail] = useState("");
+
   const [voterData, setVoterData] = React.useState({
     current_picture: "",
   });
 
+  const registerAsVoter = (e) => {
+    e.preventDefault();
+    console.log({
+      "voter-name": voterName,
+      "voter-email": voterEmail,
+      "voter-phone": voterPhone,
+      "voter-picture": voterData.current_picture,
+    });
+  };
+
   return (
-    <Box>
-      <AdminNavbar />
+    <Box sx={{ backgroundColor: "#20a5ff" }}>
+      <UserNavbar />
       {/* <NotInit /> */}
       <Box
         sx={{
@@ -91,6 +107,7 @@ export default function Registration() {
           Register to vote.
         </Typography>
       </Box>
+
       <Stack direction="column" justifyContent="center" alignItems="center">
         <Box
           sx={{
@@ -102,144 +119,152 @@ export default function Registration() {
             width: isMobile ? "95%" : isTablet ? "65%" : "53%",
           }}
         >
-          <Stack direction="column" justifyContent="center" alignItems="center">
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "35ch" },
-              }}
-              noValidate
-              autoComplete="off"
+          <Box component="form" onSubmit={registerAsVoter}>
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
             >
-              <InputLabel
+              <Box
                 sx={{
-                  marginBottom: "1rem",
+                  "& > :not(style)": { m: 1, width: "35ch" },
                 }}
               >
-                Name:
-              </InputLabel>
-              <TextField
-                id="outlined-basic"
-                label="Name"
-                variant="outlined"
-                required
-              />
-            </Box>
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "35ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <InputLabel
-                sx={{
-                  marginBottom: "1rem",
-                }}
-              >
-                Email:
-              </InputLabel>
-              <TextField
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                required
-              />
-            </Box>
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "35ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <InputLabel
-                sx={{
-                  marginBottom: "1rem",
-                }}
-              >
-                Number:
-              </InputLabel>
-              <TextField
-                id="outlined-basic"
-                label="Number"
-                variant="outlined"
-                required
-              />
-            </Box>
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "35ch" },
-              }}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<AddAPhotoIcon />}
-                size="large"
-                onClick={handleOpen}
-              >
-                Capture Photo
-              </Button>
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box
+                <InputLabel
                   sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: isMobile ? "90%" : isTablet ? "70%" : "40%",
-                    bgcolor: "background.paper",
-                    boxShadow: 24,
-                    p: 4,
-                    borderRadius: "20px",
+                    marginBottom: "1rem",
                   }}
                 >
-                  <Camera voterData={voterData} setVoterData={setVoterData} />
-                </Box>
-              </Modal>
-            </Box>
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "25ch" },
-              }}
-            >
-              <Typography variant="h6" sx={{ color: "#fc6348" }}>
-                Note:
-              </Typography>
-              <Typography variant="body-1">
-                Make sure your account address and phone number are correct.
-                <br />
-                Admin might not approve your account if the provided phone
-                number does not match the account address registered in the
-                admin's catalogue.
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack direction="column" justifyContent="end" alignItems="end">
-            <Box
-              sx={{
-                "& > :not(style)": { m: 1, width: "35ch" },
-                marginTop: "2rem",
-              }}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<HowToRegIcon />}
-                size="large"
+                  Name:
+                </InputLabel>
+                <TextField
+                  id="outlined-basic"
+                  label="Name"
+                  variant="outlined"
+                  required
+                  value={voterName}
+                  type="text"
+                  onChange={(e) => setVoterName(e.target.value)}
+                />
+              </Box>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "35ch" },
+                }}
               >
-                Register
-              </Button>
-            </Box>
-          </Stack>
+                <InputLabel
+                  sx={{
+                    marginBottom: "1rem",
+                  }}
+                >
+                  Email:
+                </InputLabel>
+                <TextField
+                  id="outlined-basic"
+                  label="Email"
+                  variant="outlined"
+                  required
+                  type="email"
+                  value={voterEmail}
+                  onChange={(e) => setVoterEmail(e.target.value)}
+                />
+              </Box>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "35ch" },
+                }}
+              >
+                <InputLabel
+                  sx={{
+                    marginBottom: "1rem",
+                  }}
+                >
+                  Number:
+                </InputLabel>
+                <TextField
+                  id="outlined-basic"
+                  label="Number"
+                  variant="outlined"
+                  required
+                  type="number"
+                  value={voterPhone}
+                  onChange={(e) => setVoterPhone(e.target.value)}
+                />
+              </Box>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "35ch" },
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  startIcon={<AddAPhotoIcon />}
+                  size="large"
+                  onClick={handleOpen}
+                >
+                  Capture Photo
+                </Button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      width: isMobile ? "90%" : isTablet ? "70%" : "40%",
+                      bgcolor: "background.paper",
+                      boxShadow: 24,
+                      p: 4,
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <Camera voterData={voterData} setVoterData={setVoterData} />
+                  </Box>
+                </Modal>
+              </Box>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "25ch" },
+                }}
+              >
+                <Typography variant="h6" sx={{ color: "#fc6348" }}>
+                  Note:
+                </Typography>
+                <Typography variant="body-1">
+                  Make sure your account address and phone number are correct.
+                  <br />
+                  Admin might not approve your account if the provided phone
+                  number does not match the account address registered in the
+                  admin's catalogue.
+                </Typography>
+              </Box>
+            </Stack>
+            <Stack direction="column" justifyContent="end" alignItems="end">
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "35ch" },
+                  marginTop: "2rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  startIcon={<HowToRegIcon />}
+                  size="large"
+                  type="submit"
+                >
+                  Register
+                </Button>
+              </Box>
+            </Stack>
+          </Box>
         </Box>
       </Stack>
+
       <LoadCurrentVoters />
       <Box
         sx={{

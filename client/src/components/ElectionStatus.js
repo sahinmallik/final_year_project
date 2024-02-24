@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, useMediaQuery, useTheme, Typography } from "@mui/material";
-const ElectionStatus = () => {
+const ElectionStatus = (props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -19,7 +19,7 @@ const ElectionStatus = () => {
       }}
     >
       <Typography variant={isMobile ? "h6" : "h5"} component="h4">
-        Election has already Started
+        Election Status: {props.elStarted ? "Started" : "Not Started"}
       </Typography>
     </Box>
   );

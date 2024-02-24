@@ -46,7 +46,7 @@ const UserNavbar = () => {
           position: "sticky",
           justifyContent: "space-between",
           top: 0,
-          height: "6vh",
+          height: "10vh",
         }}
       >
         <Button
@@ -58,11 +58,11 @@ const UserNavbar = () => {
             textDecoration: "none",
           }}
         >
-          <HomeOutlinedIcon sx={{ fontSize: 40, color: "#000", mr: "5px" }} />
+          <HomeOutlinedIcon sx={{ fontSize: 40, color: "#fff", mr: "5px" }} />
           <Typography
             variant="h4"
             sx={{
-              color: "#000",
+              color: "#fff",
             }}
           >
             Home
@@ -72,7 +72,10 @@ const UserNavbar = () => {
           color="inherit"
           aria-label="Open Drawer"
           onClick={handleDrawerOpen}
-          sx={{ display: { xs: "block", sm: "block", md: "block" } }}
+          sx={{
+            display: { xs: "block", sm: "block", md: "block" },
+            color: "#fff",
+          }}
         >
           <MenuIcon />
         </IconButton>
@@ -105,10 +108,6 @@ const UserNavbar = () => {
           </ListItem>
         </List>
       </Drawer>
-      <NotInit />
-      <AdminOnly />
-      <UserHome />
-      <ElectionStatus />
     </>
   );
 };

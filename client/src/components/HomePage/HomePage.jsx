@@ -5,7 +5,7 @@ import Navbar from "../Navbar/Navbar";
 import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
-    <>
+    <Box sx={{ backgroundColor: "#fff" }}>
       <Navbar />
       <Stack
         direction="row"
@@ -13,7 +13,7 @@ const HomePage = () => {
         sx={{
           display: "flex",
           alignItems: "center",
-          height: "80vh",
+          height: "86.8vh",
         }}
       >
         <Box
@@ -70,7 +70,7 @@ const HomePage = () => {
           />
         </Box>
       </Stack>
-    </>
+    </Box>
   );
 };
 
