@@ -7,6 +7,7 @@ import HomePage from "./components/HomePage/HomePage";
 import Home from "./components/Home";
 import Registration from "./components/Registration/Registration";
 import Result from "./components/Result/Result";
+import AddCandidate from "./components/Admin/AddCandidate/AddCandidate";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/connect" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/add-candidate" element={<AddCandidate />} />
       </Routes>
     </Box>
   );

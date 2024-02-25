@@ -109,15 +109,8 @@ export default function Home() {
 
   if (!web3) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: theme.spacing(isMobile ? 2 : 3),
-        }}
-      >
+      <>
+        {isAdmin ? <AdminNavbar /> : <UserNavbar />}
         <Box
           sx={{
             display: "flex",
@@ -125,15 +118,25 @@ export default function Home() {
             justifyContent: "center",
             alignItems: "center",
             padding: theme.spacing(isMobile ? 2 : 3),
-            marginTop: "2rem",
-            backgroundColor: "#ddffff",
-            width: isMobile ? "95%" : isTablet ? "75%" : "70%",
-            borderRadius: "10px",
           }}
         >
-          Loading Web3, accounts, and contract..
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: theme.spacing(isMobile ? 2 : 3),
+              marginTop: "2rem",
+              backgroundColor: "#ddffff",
+              width: isMobile ? "95%" : isTablet ? "75%" : "70%",
+              borderRadius: "10px",
+            }}
+          >
+            Loading Web3, accounts, and contract..
+          </Box>
         </Box>
-      </Box>
+      </>
     );
   }
 
