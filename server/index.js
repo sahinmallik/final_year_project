@@ -1,58 +1,63 @@
-process.setMaxListeners(100);
+const EventEmitter = require("events");
+
+// Increase the default maximum number of listeners for all EventEmitter instances
+EventEmitter.defaultMaxListeners = 20;
+
 const express = require("express");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const sharp = require("sharp");
 const AWS = require("aws-sdk");
-const { v4: uuidv4 } = require("uuid");
+const uuid = require("uuid");
+
+const { promisify } = require("util");
 
 const app = express();
 const port = 8080;
 
 // AWS credentials
-const AWS_ACCESS_KEY = "AKIAY5LDB2BQH6YSUFUK";
-const AWS_SECRET_KEY = "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";
 const S3_BUCKET = "face-voter";
+app.use(bodyParser.json());
 
 // Configure AWS SDK
 AWS.config.update({
-  accessKeyId: AWS_ACCESS_KEY,
-  secretAccessKey: AWS_SECRET_KEY,
+  accessKeyId: "AKIAY5LDB2BQH6YSUFUK",
+  secretAccessKey: "m9AmntTD+Mbk3V11YgOeB0VrqZr6dYqd9hp+8pYV",
   region: "us-east-1", // Update with your region
 });
 
 // Create S3 instance
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+  accessKeyId: "AKIAY5LDB2BQH6YSUFUK",
+  secretAccessKey: "m9AmntTD+Mbk3V11YgOeB0VrqZr6dYqd9hp+8pYV",
+});
 
-app.use(bodyParser.json());
-
-app.post("/upload", async (req, res) => {
+// Endpoint to upload a picture with label to S3
+app.post("/post-face", async (req, res) => {
   try {
-    // Get the base64 image data from the request
-    const base64Data = req.body.base64_data;
+    const { image, name } = req.body;
 
-    // Decode base64 data
-    const imageBuffer = Buffer.from(base64Data, "base64");
+    // Decode base64 image
+    const imageData = Buffer.from(image, "base64");
 
-    // Generate a unique key for the S3 object (you may want to use a more sophisticated approach)
-    // const s3Key = `uploads/${uuidv4()}.jpg`;
+    // Generate a unique filename
 
-    // Upload the image to S3
+    // Define S3 upload parameters
     const params = {
       Bucket: S3_BUCKET,
-      Key: `${Date.now()}.png`,
-      Body: imageBuffer,
-      ContentType: "image/png", // Update with your image content type
-      //   ACL: "public-read", // Make the uploaded file public
+      Key: `${name}.jpg`, // Key is the path where the image will be stored in S3
+      Body: imageData,
+      ACL: "public-read", // Set ACL to public-read for public access to the uploaded image
+      ContentType: "image/jpeg", // Specify content type
     };
 
-    await s3.putObject(params).promise();
+    // Upload image to S3
+    const data = await promisify(s3.upload)(params);
 
-    // Generate a public URL for the uploaded image
-    const imageUrl = `https://${S3_BUCKET}.s3.amazonaws.com/hell`;
-
-    res.json({ success: true, image_url: imageUrl });
+    res.json({ success: true, imageUrl: data.Location });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+    console.error("Error uploading image:", error);
+    res.status(500).json({ success: false, error: "Error uploading image" });
   }
 });
 
