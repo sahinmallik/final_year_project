@@ -539,7 +539,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 15,
   },
 }));
 
@@ -599,7 +599,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
           <Table sx={{ minWidth: 200 }} aria-label="customized table">
             <TableBody>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Account Address
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -607,7 +611,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Name
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -615,7 +623,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Email
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -623,7 +635,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Phone
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -631,7 +647,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Photo
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -644,7 +664,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Voted
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -652,7 +676,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Verification
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -660,7 +688,11 @@ function LoadCurrentVoters({ currentVoter, isRegistered }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Registered
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -708,7 +740,11 @@ function LoadAllVoters({ voters }) {
               <Table sx={{ minWidth: 200 }} aria-label="customized table">
                 <TableBody>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Account Address
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -716,13 +752,21 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Name
                     </StyledTableCell>
                     <StyledTableCell align="left">{voter.name}</StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Email
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -730,7 +774,11 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Phone
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -738,7 +786,11 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Photo
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -751,7 +803,11 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Voted
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -759,7 +815,11 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Verification
                     </StyledTableCell>
                     <StyledTableCell align="left">
@@ -767,7 +827,11 @@ function LoadAllVoters({ voters }) {
                     </StyledTableCell>
                   </StyledTableRow>
                   <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      sx={{ fontWeight: "bold" }}
+                    >
                       Registered
                     </StyledTableCell>
                     <StyledTableCell align="left">
