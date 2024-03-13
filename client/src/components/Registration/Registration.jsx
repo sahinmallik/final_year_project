@@ -424,6 +424,7 @@ export default function Registration() {
                         <Camera
                           voterData={voterData}
                           setVoterData={setVoterData}
+                          page={Register}
                         />
                       </Box>
                     </Modal>

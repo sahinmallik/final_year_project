@@ -26,7 +26,7 @@ const dataURItoBlob = (dataURI) => {
   return new Blob([ab], { type: mimeString });
 };
 
-const Camera = ({ voterData, setVoterData }) => {
+const Camera = ({ voterData, setVoterData, page }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
@@ -124,7 +124,7 @@ const Camera = ({ voterData, setVoterData }) => {
           <>
             <Typography variant="p" marginBottom="1rem">
               your picture is clicked now you can closed the camera interface by
-              clicking anywhere in the screen and then click Register.
+              clicking anywhere in the screen and then click {page}.
             </Typography>
             <img src={url} alt="Your Picture" />
             <Button

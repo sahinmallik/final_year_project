@@ -9,6 +9,7 @@ import Registration from "./components/Registration/Registration";
 import Result from "./components/Result/Result";
 import AddCandidate from "./components/Admin/AddCandidate/AddCandidate";
 import Verification from "./components/Admin/Verification/Verification";
+import Voting from "./components/Voting/Voting";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/result" element={<Result />} />
         <Route path="/add-candidate" element={<AddCandidate />} />
         <Route path="/verification" element={<Verification />} />
+        <Route path="/voting" element={<Voting />} />
       </Routes>
     </Box>
   );
