@@ -65,7 +65,6 @@ export default function Registration() {
           .getTotalCandidate()
           .call();
         setCandidateCount(candidateCount);
-
         const loadedCandidates = [];
         for (let i = 0; i < candidateCount; i++) {
           const candidate = await instance.methods.candidateDetails(i).call();
@@ -291,6 +290,7 @@ function LoadAllVoters({ candidates }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  console.log(candidates);
   const renderAdded = (candidate) => {
     return (
       <Box
@@ -307,11 +307,15 @@ function LoadAllVoters({ candidates }) {
           marginBottom: "2rem",
         }}
       >
-        <TableContainer component={Paper}>
+        <TableContainer>
           <Table sx={{ minWidth: 200 }} aria-label="customized table">
             <TableBody>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Name
                 </StyledTableCell>
                 <StyledTableCell align="left">
@@ -319,7 +323,11 @@ function LoadAllVoters({ candidates }) {
                 </StyledTableCell>
               </StyledTableRow>
               <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontWeight: "bold" }}
+                >
                   Slogan
                 </StyledTableCell>
                 <StyledTableCell align="left">

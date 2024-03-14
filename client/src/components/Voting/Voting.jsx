@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   useTheme,
@@ -15,6 +15,8 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import PollIcon from "@mui/icons-material/Poll";
 import Camera from "../Registration/Camera";
+import Election from "../../contracts/Election.json";
+import getWeb3 from "../../getWeb3";
 
 const Voting = () => {
   const theme = useTheme();
@@ -24,75 +26,92 @@ const Voting = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [voterData, setVoterData] = React.useState({
+
+  const [voterData, setVoterData] = useState({
     current_picture: "",
   });
 
-  const renderCandidates = () => {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: theme.spacing(isMobile ? 2 : 3),
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: theme.spacing(isMobile ? 2 : 3),
-            marginTop: "2rem",
-            backgroundColor: "#f2f2f2",
-            borderRadius: "10px",
-            width: isMobile ? "95%" : isTablet ? "75%" : "70%",
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={10}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: theme.spacing(isMobile ? 2 : 3),
+  const [web3, setWeb3] = useState(null);
+  const [electionInstance, setElectionInstance] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [candidateCount, setCandidateCount] = useState(null);
+  const [isElStarted, setIsElStarted] = useState(false);
+  const [isElEnded, setIsElEnded] = useState(false);
+  const [candidates, setCandidates] = useState([]);
+  const [currentVoter, setCurrentVoter] = useState({
+    address: undefined,
+    name: null,
+    phone: null,
+    hasVoted: false,
+    isVerified: false,
+    isRegistered: false,
+    faceVerified: false,
+  });
 
-                  backgroundColor: "#D3D3D3	",
-                  borderRadius: "10px",
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  component="h4"
-                  sx={{ marginBottom: "1rem" }}
-                >
-                  Name{" "}
-                  <span style={{ color: "white", fontSize: "1.2rem" }}>#0</span>
-                </Typography>
-                <Typography variant="h5" component="h5">
-                  Slogan
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                startIcon={<PollIcon />}
-                sx={{ marginTop: "3rem" }}
-              >
-                Vote
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-    );
-  };
+  useEffect(() => {
+    const loadWeb3AndContract = async () => {
+      if (!window.location.hash) {
+        window.location = window.location + "#loaded";
+        window.location.reload();
+      }
+      try {
+        const web3 = await getWeb3();
+        const accounts = await web3.eth.requestAccounts();
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = Election.networks[networkId];
+        const instance = new web3.eth.Contract(
+          Election.abi,
+          deployedNetwork && deployedNetwork.address
+        );
+
+        setWeb3(web3);
+        setElectionInstance(instance);
+        setAccount(accounts[0]);
+
+        const candidateCount = await instance.methods
+          .getTotalCandidate()
+          .call();
+        setCandidateCount(candidateCount);
+
+        console.log(candidateCount);
+        const start = await instance.methods.getStart().call();
+        setIsElStarted(start);
+        const end = await instance.methods.getEnd().call();
+        setIsElEnded(end);
+
+        const loadedCandidates = [];
+        for (let i = 1; i <= candidateCount; i++) {
+          const candidate = await instance.methods
+            .candidateDetails(i - 1)
+            .call();
+          loadedCandidates.push({
+            id: candidate.candidateId,
+            header: candidate.header,
+            slogan: candidate.slogan,
+          });
+        }
+        setCandidates(loadedCandidates);
+
+        const voter = await instance.methods.voterDetails(accounts[0]).call();
+        setCurrentVoter({
+          address: voter.voterAddress,
+          name: voter.name,
+          phone: voter.phone,
+          hasVoted: voter.hasVoted,
+          isVerified: voter.isVerified,
+          isRegistered: voter.isRegistered,
+          faceVerified: voter.faceVerified,
+        });
+
+        const admin = await instance.methods.getAdmin().call();
+        setIsAdmin(accounts[0] === admin);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadWeb3AndContract();
+  }, [account]);
 
   return (
     <>
@@ -158,7 +177,7 @@ const Voting = () => {
           >
             Verify Face before casting your vote.
           </Typography>
-          {voterData.current_picture ? (
+          {voterData.current_picture.length < 1 ? (
             <Button
               variant="contained"
               size="large"
@@ -286,18 +305,10 @@ const Voting = () => {
           component="h1"
           sx={{ fontSize: "1.3rem", color: "#fff" }}
         >
-          Total Candidates: 0
+          Total Candidates: {candidates.length}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: theme.spacing(isMobile ? 2 : 3),
-        }}
-      >
+      {candidates.length < 1 ? (
         <Box
           sx={{
             display: "flex",
@@ -305,17 +316,34 @@ const Voting = () => {
             justifyContent: "center",
             alignItems: "center",
             padding: theme.spacing(isMobile ? 2 : 3),
-            backgroundColor: "#fffbde",
-            width: isMobile ? "95%" : isTablet ? "75%" : "70%",
-            borderRadius: "10px",
           }}
         >
-          <Typography variant={isMobile ? "p" : isTablet ? "p" : "p"}>
-            Not one to vote for.
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: theme.spacing(isMobile ? 2 : 3),
+              backgroundColor: "#fffbde",
+              width: isMobile ? "95%" : isTablet ? "75%" : "70%",
+              borderRadius: "10px",
+            }}
+          >
+            <Typography variant={isMobile ? "p" : isTablet ? "p" : "p"}>
+              Not one to vote for.
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-      {renderCandidates()}
+      ) : (
+        <LoadAllVoters
+          candidates={candidates}
+          electionInstance={electionInstance}
+          account={account}
+          web3={web3}
+        />
+      )}
+
       <Box
         sx={{
           display: "flex",
@@ -352,5 +380,102 @@ const Voting = () => {
     </>
   );
 };
+
+function LoadAllVoters({ candidates, electionInstance, account, web3 }) {
+  const castVote = async (id) => {
+    try {
+      await electionInstance.methods
+        .vote(id)
+        .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
+      window.location.reload();
+    } catch (error) {
+      console.log(id);
+    }
+  };
+
+  const confirmVote = (id, header) => {
+    var r = window.confirm(
+      "Vote for " + header + " with Id " + id + ".\nAre you sure?"
+    );
+    if (r === true) {
+      castVote(id);
+    }
+  };
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+  const renderAdded = (candidate) => {
+    const id = web3.toBigNumber(candidate.id);
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: theme.spacing(isMobile ? 2 : 3),
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: theme.spacing(isMobile ? 2 : 3),
+            marginTop: "2rem",
+            backgroundColor: "#f2f2f2",
+            borderRadius: "10px",
+            width: isMobile ? "95%" : isTablet ? "75%" : "70%",
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={10}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: theme.spacing(isMobile ? 2 : 3),
+
+                  backgroundColor: "#D3D3D3	",
+                  borderRadius: "10px",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  component="h4"
+                  sx={{ marginBottom: "1rem" }}
+                >
+                  {candidate.header}
+                  <span style={{ color: "white", fontSize: "1.2rem" }}>
+                    {"#" + candidate.id.toString()}
+                  </span>
+                </Typography>
+
+                <Typography variant="h5" component="h5">
+                  {candidate.slogan}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                startIcon={<PollIcon />}
+                sx={{ marginTop: "3rem" }}
+                onClick={() => confirmVote(id, candidate.header)}
+              >
+                Vote
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    );
+  };
+  return <Box>{candidates.map(renderAdded)}</Box>;
+}
 
 export default Voting;
