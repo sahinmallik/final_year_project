@@ -233,10 +233,12 @@ function DisplayResults({ isMobile, isTablet, theme, candidates }) {
             <TableBody>
               <TableRow>
                 <TableCell component="td" scope="row">
-                  {candidate.id}
+                  {candidate.id.toString()}
                 </TableCell>
                 <TableCell align="left">{candidate.header}</TableCell>
-                <TableCell align="left">{candidate.voteCount}</TableCell>
+                <TableCell align="left">
+                  {candidate.voteCount.toString()}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -246,6 +248,7 @@ function DisplayResults({ isMobile, isTablet, theme, candidates }) {
   );
 
   function renderWinner(winner) {
+    console.log(winner.voteCount);
     return (
       <Box
         sx={{
@@ -304,7 +307,7 @@ function DisplayResults({ isMobile, isTablet, theme, candidates }) {
                 Total Votes:
               </Typography>
               <Typography variant="h2" component="h2">
-                {winner.voteCount}
+                {winner.voteCount.toString()}
               </Typography>
             </Grid>
           </Grid>

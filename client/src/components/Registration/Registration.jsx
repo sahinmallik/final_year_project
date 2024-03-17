@@ -94,6 +94,7 @@ export default function Registration() {
         if (accounts[0] === admin) {
           setIsAdmin(true);
         }
+        console.log("Admin: ", accounts[0]);
 
         const start = await instance.methods.getStart().call();
         setElStarted(start);

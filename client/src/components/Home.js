@@ -95,16 +95,20 @@ export default function Home() {
   };
 
   const registerElection = async (data) => {
-    await ElectionInstance.methods
-      .setElectionDetails(
-        data.adminName.toLowerCase(),
-        data.adminEmail.toLowerCase(),
-        data.adminTitle.toLowerCase(),
-        data.electionTitle.toLowerCase(),
-        data.organizationTitle.toLowerCase()
-      )
-      .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
-    window.location.reload();
+    try {
+      await ElectionInstance.methods
+        .setElectionDetails(
+          data.adminName.toLowerCase(),
+          data.adminEmail.toLowerCase(),
+          data.adminTitle.toLowerCase(),
+          data.electionTitle.toLowerCase(),
+          data.organizationTitle.toLowerCase()
+        )
+        .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!web3) {
