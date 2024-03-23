@@ -31,6 +31,7 @@ export default function Home() {
   const [elStarted, setElStarted] = useState(false);
   const [elEnded, setElEnded] = useState(false);
   const [elDetails, setElDetails] = useState({});
+  const [startElectionLoading, setStartElectionLoading] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -95,6 +96,7 @@ export default function Home() {
   };
 
   const registerElection = async (data) => {
+    setStartElectionLoading(true);
     try {
       await ElectionInstance.methods
         .setElectionDetails(
@@ -105,6 +107,7 @@ export default function Home() {
           data.organizationTitle.toLowerCase()
         )
         .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
+      setStartElectionLoading(false);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -246,6 +249,7 @@ function AdminHome({
   registerElection,
   endElection,
   elDetails,
+  startElectionLoading,
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -459,6 +463,7 @@ function AdminHome({
           elStarted={elStarted}
           elEnded={elEnded}
           endElFn={endElection}
+          startElectionLoading={startElectionLoading}
         />
       </Stack>
       <Stack direction="column" justifyContent="center" alignItems="center">

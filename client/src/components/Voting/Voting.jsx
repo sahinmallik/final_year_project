@@ -19,6 +19,7 @@ import Election from "../../contracts/Election.json";
 import getWeb3 from "../../getWeb3";
 import UserNavbar from "../UserNavbar/UserNavbar";
 import NotInit from "../../NotInit";
+import axios from "axios";
 
 const Voting = () => {
   const theme = useTheme();
@@ -116,6 +117,41 @@ const Voting = () => {
     loadWeb3AndContract();
   }, [account]);
 
+  const verify = async (e) => {
+    e.preventDefault();
+    const requestData = { image: voterData.current_picture };
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/check-face",
+        requestData
+      );
+      console.log("Response:", response.data);
+
+      if (response.data.result.length !== 0) {
+        response.data.result.forEach(async (result) => {
+          if (result._label === currentVoter.name.toString()) {
+            try {
+              await electionInstance.methods
+                .faceVerify(account)
+                .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
+              window.location.reload();
+            } catch (error) {
+              console.error("Error verifying face:", error);
+            }
+          } else {
+            alert("Your face is not verified");
+            window.location.reload();
+          }
+        });
+      } else {
+        alert("Your face is not verified");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error verifying face:", error);
+    }
+  };
+
   return (
     <>
       {isAdmin ? <AdminNavbar /> : <UserNavbar />}
@@ -123,9 +159,9 @@ const Voting = () => {
         <NotInit />
       ) : isElStarted && !isElEnded ? (
         <>
-          {currentVoter.isRegistered ? (
-            currentVoter.isVerified ? (
-              currentVoter.hasVoted ? (
+          {currentVoter?.isRegistered ? (
+            currentVoter?.isVerified ? (
+              currentVoter?.hasVoted ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -214,6 +250,7 @@ const Voting = () => {
                               size="large"
                               color="primary"
                               startIcon={<VerifiedUserIcon />}
+                              onClick={verify}
                             >
                               Verfiy Face
                             </Button>
@@ -371,6 +408,7 @@ const Voting = () => {
                   electionInstance={electionInstance}
                   account={account}
                   web3={web3}
+                  currentVoter={currentVoter}
                 />
               )}
             </>

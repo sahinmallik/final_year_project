@@ -20,6 +20,7 @@ import {
   styled,
   Modal,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 // import AdminNavbar from "../UserNavbar/AdminNavbar";
 import NotInit from "../../NotInit";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
@@ -69,6 +70,7 @@ export default function Registration() {
     isVerified: false,
     isRegistered: false,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadWeb3AndContract = async () => {
@@ -94,7 +96,6 @@ export default function Registration() {
         if (accounts[0] === admin) {
           setIsAdmin(true);
         }
-        console.log("Admin: ", accounts[0]);
 
         const start = await instance.methods.getStart().call();
         setElStarted(start);
@@ -188,6 +189,7 @@ export default function Registration() {
 
   const registerAsVoter = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const imageFile = dataURLtoFile(
       voterData.current_picture,
       `${voterName}.png`
@@ -198,19 +200,29 @@ export default function Registration() {
     };
     const current_modified_picture = await sendFileToIPFS(imageFile);
 
-    try {
-      await ElectionInstance.methods
-        .registerAsVoter(
-          voterName,
-          voterPhone,
-          current_modified_picture,
-          voterEmail
-        )
-        .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
+    await axios
+      .post("http://localhost:8080/post-face", requestData)
+      .then(async (res) => {
+        if (res.data.message === "Face data stored successfully") {
+          try {
+            await ElectionInstance.methods
+              .registerAsVoter(
+                voterName,
+                voterPhone,
+                current_modified_picture,
+                voterEmail
+              )
+              .send({ from: account, gas: 1000000, gasPrice: 1000000000 });
+            window.location.reload();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      })
+      .catch((err) => {
+        alert("Face not verified , Please try again");
+        console.log(err.msg);
+      });
   };
 
   const captureImage = () => {
@@ -455,25 +467,31 @@ export default function Registration() {
                       marginTop: "2rem",
                     }}
                   >
-                    <Button
-                      variant="outlined"
-                      startIcon={
-                        currentVoter.isRegistered ? (
-                          <SyncAltIcon />
-                        ) : (
-                          <HowToRegIcon />
-                        )
-                      }
-                      size="large"
-                      type="submit"
-                      disabled={
-                        voterPhone.length !== 10 ||
-                        currentVoter.isVerified ||
-                        voterData.current_picture === ""
-                      }
-                    >
-                      {currentVoter.isRegistered ? "Update" : "Register"}
-                    </Button>
+                    {loading ? (
+                      <LoadingButton loading variant="outlined">
+                        <span>Submit</span>
+                      </LoadingButton>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        startIcon={
+                          currentVoter.isRegistered ? (
+                            <SyncAltIcon />
+                          ) : (
+                            <HowToRegIcon />
+                          )
+                        }
+                        size="large"
+                        type="submit"
+                        disabled={
+                          voterPhone.length !== 10 ||
+                          currentVoter.isVerified ||
+                          voterData.current_picture === ""
+                        }
+                      >
+                        {currentVoter.isRegistered ? "Update" : "Register"}
+                      </Button>
+                    )}
                   </Box>
                 </Stack>
               </Box>
